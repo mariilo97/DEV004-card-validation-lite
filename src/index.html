@@ -7,23 +7,71 @@
 </head>
 
 <body>
-  <input id="cardnumber"></input>
-  <button onclick="validate()">Validar</button>
+  <input id="cardnumber" type="number" pattern="[0-9]" name="caja de texto" placeholder="Inserte n° de tarjeta"></input>
+  <button onclick="validate()">Validar Tarjeta</button>
   <div id="result"></div>
   <script lang="javascript">
+
     function validate() {
-      const valid = isValid(document.getElementById("cardnumber").value)
-      if (valid) {
-        // Show success in div#result
+      const cardnumber = document.getElementById("cardnumber").value; // capturando valor
+      if (cardnumber === "") { // no tiene valor
+        alert("Captura el numero de tu tarjeta")
       }
       else {
-        // Show error message in div#result
+        valid(cardnumber); // envias el valor a la fn
+        // alert("Validando numero...")
       }
+
     }
 
-    function isValid(creditCardNumber){
-      // is creditCardNumber valid?
-      return false
+    // kebab-case
+    // snake_case
+    // camelCase
+
+    function isValid(tarjeta) {
+      //divide el conjunto de numeros y reverso de los numeros 
+      let division = tarjeta.split("").reverse();
+      let arrayImpares = [];
+      let arrayPares = [];
+      // identificar pares e impares y multiplicarlos
+      for (let i = 0; i < division.length; i++) {
+        if (i % 2 === 1) {
+          if ((division[i] * 2) > 9) {
+            arrayPares.push((division[i] * 2) - 9);
+
+          } else {
+            arrayPares.push(division[i] * 2);
+          }
+
+        }
+        if (i % 2 === 0) {
+          arrayImpares.push(Number(division[i]));
+        }
+      }
+
+      //sumar los array para tener un resultado unico 
+      let nuevoArray = []; {
+        nuevoArray = arrayImpares.concat(arrayPares);
+      }
+
+      //sumar el resultado del arrayNuevo
+      let suma = 0;
+      for (let i = 0; i < nuevoArray.length; i++) {
+        suma += nuevoArray[i];
+      }
+      const resultado = suma % 10;
+      return resultado === 0;
+
+    }
+
+    function valid() {
+      const result = isValid(document.getElementById("cardnumber").value);
+      if (result === true) {
+        alert("Tu tarjeta es valida")
+      }
+      else {
+        alert("Tu tarjeta es invalida")
+      }
     }
   </script>
 </body>
